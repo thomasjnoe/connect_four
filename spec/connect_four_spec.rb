@@ -17,6 +17,26 @@ module ConnectFour
 			end
 		end
 
+		describe "#switch_player" do
+			context "when current player is Player 1" do
+				it "switches current player to Player 2" do
+					game.current_player = "Player 1"
+					game.switch_player
+					expect(game.current_player).to eq "Player 2"
+					expect(game.current_disc).to eq "O"
+				end
+
+				context "when current player is Player 2" do
+					it "switches current player to Player 1" do
+						game.current_player = "Player 2"
+						game.switch_player
+						expect(game.current_player).to eq "Player 1"
+						expect(game.current_disc).to eq "X"
+					end
+				end
+			end
+		end
+
 		describe "#select_column" do
 			it "asks the player to choose a column to drop disc into" do
 				expect(game).to receive(:gets).and_return("1")
@@ -33,7 +53,7 @@ module ConnectFour
 			end
 
 			context "when row 6 is occupied" do
-				it "sets drop location to row 6" do
+				it "sets drop location to row 5" do
 					game.grid[[5,0]] = "X"
 					expect(game).to receive(:select_column).and_return(1)
 					expect(game.drop_location).to eq [4,0]
@@ -41,7 +61,7 @@ module ConnectFour
 			end
 
 			context "when rows 5 and 6 are occupied" do
-				it "sets drop location to row 6" do
+				it "sets drop location to row 4" do
 					game.grid[[4,0]] = "X"
 					game.grid[[5,0]] = "X"
 					expect(game).to receive(:select_column).and_return(1)
@@ -50,7 +70,7 @@ module ConnectFour
 			end
 
 			context "when rows 4, 5 and 6 are occupied" do
-				it "sets drop location to row 6" do
+				it "sets drop location to row 3" do
 					game.grid[[3,0]] = "X"
 					game.grid[[4,0]] = "X"
 					game.grid[[5,0]] = "X"
@@ -60,7 +80,7 @@ module ConnectFour
 			end
 
 			context "when rows 3, 4, 5 and 6 are occupied" do
-				it "sets drop location to row 6" do
+				it "sets drop location to row 2" do
 					game.grid[[2,0]] = "X"
 					game.grid[[3,0]] = "X"
 					game.grid[[4,0]] = "X"
@@ -71,7 +91,7 @@ module ConnectFour
 			end
 
 			context "when rows 2, 3, 4, 5 and 6 are occupied" do
-				it "sets drop location to row 6" do
+				it "sets drop location to row 1" do
 					game.grid[[1,0]] = "X"
 					game.grid[[2,0]] = "X"
 					game.grid[[3,0]] = "X"
@@ -83,17 +103,41 @@ module ConnectFour
 			end
 
 			context "when all rows are occupied" do
-				it "sets drop location to row 6" do
+				it "notifies player that all rows are occupied" do
 					game.grid[[0,0]] = "X"
 					game.grid[[1,0]] = "X"
 					game.grid[[2,0]] = "X"
 					game.grid[[3,0]] = "X"
 					game.grid[[4,0]] = "X"
 					game.grid[[5,0]] = "X"
-					expect(game).to receive(:select_column).and_return(1)
-					expect(game.drop_location).to eq "All rows are occupied, please select another column"
+					allow(game).to receive(:select_column).and_return(1)
+					allow(game).to receive(:select_column).and_return(2)
+					expect(game.drop_location).to eq [5,1]
+				end
+			end
+		end
+
+		describe "#set_disc" do
+			context "during Player 1's turn" do
+				it "places an X in the game grid at the drop location specified" do
+					game.current_player = "Player 1"
+					game.set_disc([1,2])
+					expect(game.grid[[1,2]]).to eq "X"
+				end
+			end
+
+			context "during Player 2's turn" do
+				it "places an O in the game grid at the drop location specified" do
+					game.current_player = "Player 2"
+					game.set_disc([1,2])
+					expect(game.grid[[1,2]]).to eq "O"
 				end
 			end
 		end
 	end
 end
+
+
+
+
+
