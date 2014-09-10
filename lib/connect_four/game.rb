@@ -39,22 +39,25 @@ module ConnectFour
 			selection.to_i
 		end
 
+		def first_unoccupied_row(col)
+			5.downto(0) do |r|
+				if @grid[[r,col]] == "_"
+					return r
+				end
+			end
+		end
+
 		def drop_location
-			loop do
-			col = select_column - 1
 			row = nil
-				5.downto(0) do |r|
-					if @grid[[r,col]] == "_"
-						row = r
-						break
-					end
-				end
-				if row.nil?
-					puts "All rows are occupied, please select another column"
-				else
-					loc = [row,col]
-					return loc
-				end
+			while row.nil?
+				col = select_column - 1
+				row = first_unoccupied_row(col)
+			end
+			if row.nil?
+				puts "All rows are occupied, please select another column"
+			else
+				loc = [row,col]
+				return loc
 			end
 		end
 
