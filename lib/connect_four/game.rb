@@ -34,7 +34,7 @@ module ConnectFour
 		end
 
 		def select_column
-			print "Select a column (1-7) to drop a disc into: "
+			print "#{@current_player}, select a column (1-7) to drop a disc into: "
 			selection = gets.chomp
 			selection.to_i
 		end
@@ -45,6 +45,7 @@ module ConnectFour
 					return r
 				end
 			end
+			return
 		end
 
 		def drop_location
@@ -52,12 +53,12 @@ module ConnectFour
 			while row.nil?
 				col = select_column - 1
 				row = first_unoccupied_row(col)
-			end
-			if row.nil?
-				puts "All rows are occupied, please select another column"
-			else
-				loc = [row,col]
-				return loc
+				if row.nil?
+					puts "All rows are occupied, please select another column"
+				else
+					loc = [row,col]
+					return loc
+				end
 			end
 		end
 

@@ -110,8 +110,16 @@ module ConnectFour
 					game.grid[[3,0]] = "X"
 					game.grid[[4,0]] = "X"
 					game.grid[[5,0]] = "X"
-					allow(game).to receive(:select_column).and_return(1)
-					allow(game).to receive(:select_column).and_return(2)
+					allow(game).to receive(:select_column) do 
+						@counter ||= 0
+						response = if @counter > 3
+							2
+						else
+							1
+						end
+						@counter += 1
+						response
+					end
 					expect(game.drop_location).to eq [5,1]
 				end
 			end
