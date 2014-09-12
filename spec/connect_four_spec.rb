@@ -142,6 +142,18 @@ module ConnectFour
 				end
 			end
 		end
+
+		describe "#game_over?" do
+			context "when horizontal connect four occurs" do
+				it "returns true" do
+					game.grid[[5,0]] = "X"
+					game.grid[[5,1]] = "X"
+					game.grid[[5,2]] = "X"
+					game.grid[[5,3]] = "X"
+					expect(game.game_over?).to eq true
+				end
+			end
+		end
 	end
 end
 

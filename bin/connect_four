@@ -4,9 +4,9 @@ require 'connect_four'
 
 game = ConnectFour::Game.new
 game.start
-loop do
+until game.game_over?
 	game.display_grid
 	game.set_disc(game.drop_location)
-	game.switch_player
+	game.check_for_game_over
 end
 

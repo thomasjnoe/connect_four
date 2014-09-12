@@ -65,5 +65,41 @@ module ConnectFour
 		def set_disc(drop_location)
 			@grid[drop_location] = current_disc
 		end
+
+		def game_over?
+			win_conditions = [ [[5,0],[5,1],[5,2],[5,3]] ]
+			win_condition_met = false
+			win_conditions.each do |condition|
+				discs = [@grid[condition[0]], @grid[condition[1]], @grid[condition[2]], @grid[condition[3]]]
+				if discs.all? { |disc| disc == current_disc }
+					win_condition_met = true
+				else
+					win_condition_met = false
+				end
+				return true if win_condition_met
+			end
+			return false
+		end
+
+		def display_win_message
+			if game_over?
+				"Connect Four! #{@current_player} wins!"
+			end
+		end
+
+		def check_for_game_over
+			if game_over?
+				puts display_win_message
+				display_grid
+			else
+				switch_player
+			end
+		end
 	end
 end
+
+
+
+
+
+
