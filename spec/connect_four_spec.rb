@@ -145,11 +145,21 @@ module ConnectFour
 
 		describe "#game_over?" do
 			context "when horizontal connect four occurs" do
-				it "returns true" do
-					game.grid[[5,0]] = "X"
-					game.grid[[5,1]] = "X"
-					game.grid[[5,2]] = "X"
-					game.grid[[5,3]] = "X"
+				it "returns true for player 1" do
+					game.current_player = "Player 1"
+					game.set_disc([5,0])
+					game.set_disc([5,1])
+					game.set_disc([5,2])
+					game.set_disc([5,3])
+					expect(game.game_over?).to eq true
+				end
+
+				it "returns true for player 2" do
+					game.current_player = "Player 2"
+					game.set_disc([1,2])
+					game.set_disc([1,3])
+					game.set_disc([1,4])
+					game.set_disc([1,5])
 					expect(game.game_over?).to eq true
 				end
 			end
