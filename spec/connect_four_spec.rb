@@ -163,6 +163,26 @@ module ConnectFour
 					expect(game.game_over?).to eq true
 				end
 			end
+
+			context "when vertical connect four occurs" do
+				it "returns true for player 1" do
+					game.current_player = "Player 1"
+					game.set_disc([5,0])
+					game.set_disc([4,0])
+					game.set_disc([3,0])
+					game.set_disc([2,0])
+					expect(game.game_over?).to eq true
+				end
+
+				it "returns true for player 2" do
+					game.current_player = "Player 2"
+					game.set_disc([2,2])
+					game.set_disc([3,2])
+					game.set_disc([4,2])
+					game.set_disc([5,2])
+					expect(game.game_over?).to eq true
+				end
+			end
 		end
 	end
 end
