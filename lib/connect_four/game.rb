@@ -26,7 +26,7 @@ module ConnectFour
 			(0..5).each do |row|
 				print "|"
 				(0..6).each do |col|
-					print col == 6 ? "#{@grid[[row,col]]}" : "#{@grid[[row,col]]} "
+					print col == 6 ? "#{@grid[[col,row]]}" : "#{@grid[[col,row]]} "
 				end
 				print "|\n"
 			end
@@ -41,7 +41,7 @@ module ConnectFour
 
 		def first_unoccupied_row(col)
 			5.downto(0) do |r|
-				if @grid[[r,col]] == "_"
+				if @grid[[col,r]] == "_"
 					return r
 				end
 			end
@@ -54,9 +54,9 @@ module ConnectFour
 				col = select_column - 1
 				row = first_unoccupied_row(col)
 				if row.nil?
-					puts "All rows are occupied, please select another column"
+					puts "Column #{col+1} is full, please select another column"
 				else
-					loc = [row,col]
+					loc = [col,row]
 					return loc
 				end
 			end
@@ -67,7 +67,7 @@ module ConnectFour
 		end
 
 		def game_over?
-			win_conditions = [ # Horizontal Wins
+			win_conditions = [ # Vertical Wins
 												 [[5,0],[5,1],[5,2],[5,3]],
 												 [[5,1],[5,2],[5,3],[5,4]],
 												 [[5,2],[5,3],[5,4],[5,5]],
@@ -92,7 +92,7 @@ module ConnectFour
 												 [[0,1],[0,2],[0,3],[0,4]],
 												 [[0,2],[0,3],[0,4],[0,5]],
 												 [[0,3],[0,4],[0,5],[0,6]],
-												 # Vertical Wins
+												 # Horizontal Wins
 												 [[5,0],[4,0],[3,0],[2,0]],
 												 [[4,0],[3,0],[2,0],[1,0]],
 												 [[3,0],[2,0],[1,0],[0,0]],
@@ -114,7 +114,7 @@ module ConnectFour
 												 [[5,6],[4,6],[3,6],[2,6]],
 												 [[4,6],[3,6],[2,6],[1,6]],
 												 [[3,6],[2,6],[1,6],[0,6]],
-												 # Downward Diagonal Wins
+												 # Upward Diagonal Wins
 												 [[2,0],[3,1],[4,2],[5,3]],
 												 [[2,1],[3,2],[4,3],[5,4]],
 												 [[2,2],[3,3],[4,4],[5,5]],
@@ -127,7 +127,7 @@ module ConnectFour
 												 [[0,1],[1,2],[2,3],[3,4]],
 												 [[0,2],[1,3],[2,4],[3,5]],
 												 [[0,3],[1,4],[2,5],[3,6]], 
-												 # Upward Diagonal Wins
+												 # Downward Diagonal Wins
 												 [[5,0],[4,1],[3,2],[2,3]],
 												 [[4,0],[3,1],[2,2],[1,3]],
 												 [[3,0],[2,1],[1,2],[0,3]],

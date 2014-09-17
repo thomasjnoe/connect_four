@@ -48,55 +48,55 @@ module ConnectFour
 			context "when no rows in selected column are occupied" do
 				it "sets drop location to row 6" do
 					expect(game).to receive(:select_column).and_return(1)
-					expect(game.drop_location).to eq [5,0]
+					expect(game.drop_location).to eq [0,5]
 				end
 			end
 
 			context "when row 6 is occupied" do
 				it "sets drop location to row 5" do
-					game.grid[[5,0]] = "X"
+					game.grid[[0,5]] = "X"
 					expect(game).to receive(:select_column).and_return(1)
-					expect(game.drop_location).to eq [4,0]
+					expect(game.drop_location).to eq [0,4]
 				end
 			end
 
 			context "when rows 5 and 6 are occupied" do
 				it "sets drop location to row 4" do
-					game.grid[[4,0]] = "X"
-					game.grid[[5,0]] = "X"
+					game.grid[[0,5]] = "X"
+					game.grid[[0,4]] = "X"
 					expect(game).to receive(:select_column).and_return(1)
-					expect(game.drop_location).to eq [3,0]
+					expect(game.drop_location).to eq [0,3]
 				end
 			end
 
 			context "when rows 4, 5 and 6 are occupied" do
 				it "sets drop location to row 3" do
-					game.grid[[3,0]] = "X"
-					game.grid[[4,0]] = "X"
-					game.grid[[5,0]] = "X"
+					game.grid[[0,5]] = "X"
+					game.grid[[0,4]] = "X"
+					game.grid[[0,3]] = "X"
 					expect(game).to receive(:select_column).and_return(1)
-					expect(game.drop_location).to eq [2,0]
+					expect(game.drop_location).to eq [0,2]
 				end
 			end
 
 			context "when rows 3, 4, 5 and 6 are occupied" do
 				it "sets drop location to row 2" do
-					game.grid[[2,0]] = "X"
-					game.grid[[3,0]] = "X"
-					game.grid[[4,0]] = "X"
-					game.grid[[5,0]] = "X"
+					game.grid[[0,5]] = "X"
+					game.grid[[0,4]] = "X"
+					game.grid[[0,3]] = "X"
+					game.grid[[0,2]] = "X"
 					expect(game).to receive(:select_column).and_return(1)
-					expect(game.drop_location).to eq [1,0]
+					expect(game.drop_location).to eq [0,1]
 				end
 			end
 
 			context "when rows 2, 3, 4, 5 and 6 are occupied" do
 				it "sets drop location to row 1" do
-					game.grid[[1,0]] = "X"
-					game.grid[[2,0]] = "X"
-					game.grid[[3,0]] = "X"
-					game.grid[[4,0]] = "X"
-					game.grid[[5,0]] = "X"
+					game.grid[[0,5]] = "X"
+					game.grid[[0,4]] = "X"
+					game.grid[[0,3]] = "X"
+					game.grid[[0,2]] = "X"
+					game.grid[[0,1]] = "X"
 					expect(game).to receive(:select_column).and_return(1)
 					expect(game.drop_location).to eq [0,0]
 				end
@@ -104,12 +104,12 @@ module ConnectFour
 
 			context "when all rows are occupied" do
 				it "notifies player that all rows are occupied" do
+					game.grid[[0,5]] = "X"
+					game.grid[[0,4]] = "X"
+					game.grid[[0,3]] = "X"
+					game.grid[[0,2]] = "X"
+					game.grid[[0,1]] = "X"
 					game.grid[[0,0]] = "X"
-					game.grid[[1,0]] = "X"
-					game.grid[[2,0]] = "X"
-					game.grid[[3,0]] = "X"
-					game.grid[[4,0]] = "X"
-					game.grid[[5,0]] = "X"
 					allow(game).to receive(:select_column) do 
 						@counter ||= 0
 						response = if @counter > 3
@@ -120,7 +120,7 @@ module ConnectFour
 						@counter += 1
 						response
 					end
-					expect(game.drop_location).to eq [5,1]
+					expect(game.drop_location).to eq [1,5]
 				end
 			end
 		end
@@ -144,7 +144,7 @@ module ConnectFour
 		end
 
 		describe "#game_over?" do
-			context "when horizontal connect four occurs" do
+			context "when vertical connect four occurs" do
 				it "returns true for player 1" do
 					game.current_player = "Player 1"
 					game.set_disc([5,0])
@@ -152,6 +152,7 @@ module ConnectFour
 					game.set_disc([5,2])
 					game.set_disc([5,3])
 					expect(game.game_over?).to eq true
+					expect(game.display_win_message).to eq "Connect Four! Player 1 wins!"
 				end
 
 				it "returns true for player 2" do
@@ -161,10 +162,11 @@ module ConnectFour
 					game.set_disc([1,4])
 					game.set_disc([1,5])
 					expect(game.game_over?).to eq true
+					expect(game.display_win_message).to eq "Connect Four! Player 2 wins!"
 				end
 			end
 
-			context "when vertical connect four occurs" do
+			context "when horizontal connect four occurs" do
 				it "returns true for player 1" do
 					game.current_player = "Player 1"
 					game.set_disc([5,0])
@@ -172,6 +174,7 @@ module ConnectFour
 					game.set_disc([3,0])
 					game.set_disc([2,0])
 					expect(game.game_over?).to eq true
+					expect(game.display_win_message).to eq "Connect Four! Player 1 wins!"
 				end
 
 				it "returns true for player 2" do
@@ -181,10 +184,11 @@ module ConnectFour
 					game.set_disc([4,2])
 					game.set_disc([5,2])
 					expect(game.game_over?).to eq true
+					expect(game.display_win_message).to eq "Connect Four! Player 2 wins!"
 				end
 			end
 
-			context "when downward diagonal connect four occurs" do
+			context "when upward diagonal connect four occurs" do
 				it "returns true for player 1" do
 					game.current_player = "Player 1"
 					game.set_disc([0,3])
@@ -192,6 +196,7 @@ module ConnectFour
 					game.set_disc([2,5])
 					game.set_disc([3,6])
 					expect(game.game_over?).to eq true
+					expect(game.display_win_message).to eq "Connect Four! Player 1 wins!"
 				end
 
 				it "returns true for player 2" do
@@ -201,10 +206,11 @@ module ConnectFour
 					game.set_disc([4,2])
 					game.set_disc([5,3])
 					expect(game.game_over?).to eq true
+					expect(game.display_win_message).to eq "Connect Four! Player 2 wins!"
 				end
 			end
 
-			context "when upward diagonal connect four occurs" do
+			context "when downward diagonal connect four occurs" do
 				it "returns true for player 1" do
 					game.current_player = "Player 1"
 					game.set_disc([5,0])
@@ -212,6 +218,7 @@ module ConnectFour
 					game.set_disc([3,2])
 					game.set_disc([2,3])
 					expect(game.game_over?).to eq true
+					expect(game.display_win_message).to eq "Connect Four! Player 1 wins!"
 				end
 
 				it "returns true for player 2" do
@@ -221,6 +228,7 @@ module ConnectFour
 					game.set_disc([3,5])
 					game.set_disc([2,6])
 					expect(game.game_over?).to eq true
+					expect(game.display_win_message).to eq "Connect Four! Player 2 wins!"
 				end
 			end
 		end
