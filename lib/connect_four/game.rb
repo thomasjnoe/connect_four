@@ -87,11 +87,7 @@ module ConnectFour
 		end
 
 		def switch_player
-			if @current_player == "Player 1"
-				@current_player = "Player 2"
-			else
-				@current_player = "Player 1"
-			end
+			@current_player = (@current_player == "Player 1" ? "Player 2" : "Player 1")
 		end
 
 		def current_disc
@@ -130,11 +126,9 @@ module ConnectFour
 
 		def first_unoccupied_row(col)
 			5.downto(0) do |r|
-				if @grid[[col,r]] == "_"
-					return r
-				end
+				return r if @grid[[col,r]] == "_"
 			end
-			return
+			return nil
 		end
 
 		def drop_location
@@ -159,20 +153,14 @@ module ConnectFour
 			win_condition_met = false
 			win_conditions.each do |condition|
 				discs = [@grid[condition[0]], @grid[condition[1]], @grid[condition[2]], @grid[condition[3]]]
-				if discs.all? { |disc| disc == current_disc }
-					win_condition_met = true
-				else
-					win_condition_met = false
-				end
+				win_condition_met = discs.all? { |disc| disc == current_disc } ? true : false
 				return true if win_condition_met
 			end
 			return false
 		end
 
 		def display_win_message
-			if game_over?
-				"Connect Four! #{@current_player} wins!"
-			end
+				"Connect Four! #{@current_player} wins!" if game_over?
 		end
 
 		def check_for_game_over
