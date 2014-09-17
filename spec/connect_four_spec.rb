@@ -40,14 +40,14 @@ module ConnectFour
 		describe "#select_column" do
 			it "asks the player to choose a column to drop disc into" do
 				expect(game).to receive(:gets).and_return("1")
-				expect(game.select_column).to eq 1
+				expect(game.select_column).to eq "1"
 			end
 		end
 
 		describe "#drop_location" do
 			context "when no rows in selected column are occupied" do
 				it "sets drop location to row 6" do
-					expect(game).to receive(:select_column).and_return(1)
+					expect(game).to receive(:valid_selection).and_return(0)
 					expect(game.drop_location).to eq [0,5]
 				end
 			end
@@ -55,7 +55,7 @@ module ConnectFour
 			context "when row 6 is occupied" do
 				it "sets drop location to row 5" do
 					game.grid[[0,5]] = "X"
-					expect(game).to receive(:select_column).and_return(1)
+					expect(game).to receive(:valid_selection).and_return(0)
 					expect(game.drop_location).to eq [0,4]
 				end
 			end
@@ -64,7 +64,7 @@ module ConnectFour
 				it "sets drop location to row 4" do
 					game.grid[[0,5]] = "X"
 					game.grid[[0,4]] = "X"
-					expect(game).to receive(:select_column).and_return(1)
+					expect(game).to receive(:valid_selection).and_return(0)
 					expect(game.drop_location).to eq [0,3]
 				end
 			end
@@ -74,7 +74,7 @@ module ConnectFour
 					game.grid[[0,5]] = "X"
 					game.grid[[0,4]] = "X"
 					game.grid[[0,3]] = "X"
-					expect(game).to receive(:select_column).and_return(1)
+					expect(game).to receive(:valid_selection).and_return(0)
 					expect(game.drop_location).to eq [0,2]
 				end
 			end
@@ -85,7 +85,7 @@ module ConnectFour
 					game.grid[[0,4]] = "X"
 					game.grid[[0,3]] = "X"
 					game.grid[[0,2]] = "X"
-					expect(game).to receive(:select_column).and_return(1)
+					expect(game).to receive(:valid_selection).and_return(0)
 					expect(game.drop_location).to eq [0,1]
 				end
 			end
@@ -97,7 +97,7 @@ module ConnectFour
 					game.grid[[0,3]] = "X"
 					game.grid[[0,2]] = "X"
 					game.grid[[0,1]] = "X"
-					expect(game).to receive(:select_column).and_return(1)
+					expect(game).to receive(:valid_selection).and_return(0)
 					expect(game.drop_location).to eq [0,0]
 				end
 			end
@@ -110,12 +110,12 @@ module ConnectFour
 					game.grid[[0,2]] = "X"
 					game.grid[[0,1]] = "X"
 					game.grid[[0,0]] = "X"
-					allow(game).to receive(:select_column) do 
+					allow(game).to receive(:valid_selection) do 
 						@counter ||= 0
 						response = if @counter > 3
-							2
-						else
 							1
+						else
+							0
 						end
 						@counter += 1
 						response
