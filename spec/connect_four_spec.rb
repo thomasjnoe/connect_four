@@ -231,6 +231,57 @@ module ConnectFour
 					expect(game.display_win_message).to eq "Connect Four! Player 2 wins!"
 				end
 			end
+
+			context "when all locations are occupied and no connect four occurs" do
+				it "returns true and ends in a tie" do
+					game.current_player = "Player 1"
+					game.set_disc([0,5])
+					game.set_disc([1,5])
+					game.set_disc([2,5])
+					game.set_disc([4,5])
+					game.set_disc([5,5])
+					game.set_disc([6,5])
+					game.set_disc([3,4])
+					game.set_disc([0,3])
+					game.set_disc([1,3])
+					game.set_disc([2,3])
+					game.set_disc([4,3])
+					game.set_disc([5,3])
+					game.set_disc([6,3])
+					game.set_disc([3,2])
+					game.set_disc([0,1])
+					game.set_disc([1,1])
+					game.set_disc([2,1])
+					game.set_disc([4,1])
+					game.set_disc([5,1])
+					game.set_disc([6,1])
+					game.set_disc([3,0])
+					game.current_player = "Player 2"
+					game.set_disc([3,5])
+					game.set_disc([0,4])
+					game.set_disc([1,4])
+					game.set_disc([2,4])
+					game.set_disc([4,4])
+					game.set_disc([5,4])
+					game.set_disc([6,4])
+					game.set_disc([3,3])
+					game.set_disc([0,2])
+					game.set_disc([1,2])
+					game.set_disc([2,2])
+					game.set_disc([4,2])
+					game.set_disc([5,2])
+					game.set_disc([6,2])
+					game.set_disc([3,1])
+					game.set_disc([0,0])
+					game.set_disc([1,0])
+					game.set_disc([2,0])
+					game.set_disc([4,0])
+					game.set_disc([5,0])
+					game.set_disc([6,0])
+					expect(game.game_over?).to eq true
+					expect(game.tie?).to eq true
+				end
+			end
 		end
 	end
 end

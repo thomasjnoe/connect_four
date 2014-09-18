@@ -149,8 +149,7 @@ module ConnectFour
 			@grid[drop_location] = current_disc
 		end
 
-		def game_over?
-			win_condition_met = false
+		def winner?
 			win_conditions.each do |condition|
 				discs = [@grid[condition[0]], @grid[condition[1]], @grid[condition[2]], @grid[condition[3]]]
 				win_condition_met = discs.all? { |disc| disc == current_disc } ? true : false
@@ -159,13 +158,29 @@ module ConnectFour
 			return false
 		end
 
+		def tie?
+			(0..6).each do |col|
+				drop_locations_available = first_unoccupied_row(col)
+				return false unless drop_locations_available.nil?
+			end
+			true
+		end
+
+		def game_over?
+			return winner? || tie? ? true : false
+		end
+
 		def display_win_message
-				"Connect Four! #{@current_player} wins!" if game_over?
+			"Connect Four! #{@current_player} wins!"
+		end
+
+		def display_tie_message
+			"All locations occupied without a Connect Four. The game ends in a tie!"
 		end
 
 		def check_for_game_over
 			if game_over?
-				puts display_win_message
+				puts winner? ? display_win_message : display_tie_message
 				display_grid
 			else
 				switch_player
