@@ -330,6 +330,12 @@ module ConnectFour
 					end
 				end
 
+				context "when neither player wins" do
+					it "recognizes a tie" do
+						expect(game).to receive(:display_tie_message).and_return("All locations occupied without a Connect Four. The game ends in a tie!").and_call_original.once
+						allow(game).to receive(:valid_selection).and_return(0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,2,2,4,3,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,5,6,6,6,6,6,6)
+					end
+				end
 			end
 		end
 	end
