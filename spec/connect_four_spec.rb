@@ -293,11 +293,43 @@ module ConnectFour
 				before(:each) do
 					allow(game).to receive(:play_again?).and_return(false)
 				end
+
 				context "when Player 1 wins" do
+					before(:each) do
+						expect(game).to receive(:display_win_message).and_return("Connect Four! Player 1 wins!").and_call_original.once
+					end
+
 					it "recognizes a horizontal Connect Four" do
 						allow(game).to receive(:valid_selection).and_return(0,0,1,1,2,2,3)
 					end
+
+					it "recognizes a vertical Connect Four" do
+						allow(game).to receive(:valid_selection).and_return(0,1,0,1,0,1,0)
+					end
+
+					it "recognizes a diagonal Connect Four" do
+						allow(game).to receive(:valid_selection).and_return(0,1,2,3,1,2,2,3,3,4,3)
+					end
 				end
+
+				context "when Player 2 wins" do
+					before(:each) do
+						expect(game).to receive(:display_win_message).and_return("Connect Four! Player 2 wins!").and_call_original.once
+					end
+
+					it "recognizes a horizontal Connect Four" do
+						allow(game).to receive(:valid_selection).and_return(0,0,1,1,2,2,4,3,4,3)
+					end
+
+					it "recognizes a vertical Connect Four" do
+						allow(game).to receive(:valid_selection).and_return(0,1,0,1,2,1,0,1)
+					end
+
+					it "recognizes a diagonal Connect Four" do
+						allow(game).to receive(:valid_selection).and_return(1,0,2,1,2,2,3,3,3,3)
+					end
+				end
+
 			end
 		end
 	end
