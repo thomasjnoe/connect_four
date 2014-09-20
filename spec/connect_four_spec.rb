@@ -4,9 +4,9 @@ module ConnectFour
 	describe Game do
 		let (:game) { Game.new }
 
-		describe "#start" do
+		describe "#display_start_message" do
 			it "displays a welcome message" do
-				expect { game.start }.to output("Welcome to Connect Four!\n").to_stdout
+				expect { game.display_start_message }.to output("Welcome to Connect Four!\n").to_stdout
 			end
 		end
 
@@ -280,6 +280,23 @@ module ConnectFour
 					game.set_disc([6,0])
 					expect(game.game_over?).to eq true
 					expect(game.tie?).to eq true
+				end
+			end
+		end
+
+		describe "#play" do
+			after(:each) do
+				game.play
+			end
+
+			context "when one game played" do
+				before(:each) do
+					allow(game).to receive(:play_again?).and_return(false)
+				end
+				context "when Player 1 wins" do
+					it "recognizes a horizontal Connect Four" do
+						allow(game).to receive(:valid_selection).and_return(0,0,1,1,2,2,3)
+					end
 				end
 			end
 		end
