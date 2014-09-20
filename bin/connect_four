@@ -3,10 +3,5 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'connect_four'
 
 game = ConnectFour::Game.new
-game.start
-until game.game_over?
-	game.display_grid
-	game.set_disc(game.drop_location)
-	game.check_for_game_over
-end
+game.play
 
