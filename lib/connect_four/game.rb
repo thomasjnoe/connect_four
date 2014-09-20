@@ -1,12 +1,36 @@
 module ConnectFour
 	class Game
-		attr_accessor :grid, :current_player
+		attr_accessor :grid, :current_player, :playing
 		def initialize
+			@playing = true
 			@grid = Hash.new("_")
 			@current_player = "Player 1"
 		end
 
+		def reset
+			@grid = Hash.new("_")
+			@current_player = "Player 1"
+		end
+
+		def play
+			loop do
+				start
+				break unless play_again?
+			end
+			puts "Thanks for playing!"
+		end
+
 		def start
+			reset
+			display_start_message
+			until game_over?
+				display_grid
+				set_disc(drop_location)
+				check_for_game_over
+			end
+		end
+
+		def display_start_message
 			puts "Welcome to Connect Four!"
 		end
 
@@ -153,7 +177,9 @@ module ConnectFour
 			win_conditions.each do |condition|
 				discs = [@grid[condition[0]], @grid[condition[1]], @grid[condition[2]], @grid[condition[3]]]
 				win_condition_met = discs.all? { |disc| disc == current_disc } ? true : false
-				return true if win_condition_met
+				if win_condition_met
+					return true
+				end
 			end
 			return false
 		end
@@ -185,6 +211,12 @@ module ConnectFour
 			else
 				switch_player
 			end
+		end
+
+		def play_again?
+			puts "Play again? (y/n)"
+			response = gets.chomp.to_s.downcase
+			return (response == "y" ? true : false)
 		end
 	end
 end
