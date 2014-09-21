@@ -337,6 +337,22 @@ module ConnectFour
 					end
 				end
 			end
+
+			context "when a second game is played" do
+				before(:each) do
+					allow(game).to receive(:play_again?).and_return(true, false)
+				end
+
+				it "recognizes Player 1 wins in second game" do
+					allow(game).to receive(:valid_selection).and_return(0,0,1,1,2,2,4,3,4,3,   0,0,1,1,2,2,3)
+					expect(game).to receive(:display_win_message).and_return("Connect Four! Player 1 wins!").and_call_original.twice
+				end
+
+				it "recognizes Player 2 wins in second game" do
+					allow(game).to receive(:valid_selection).and_return(0,1,0,1,0,1,0,   0,1,0,1,2,1,0,1)
+					expect(game).to receive(:display_win_message).and_return("Connect Four! Player 2 wins!").and_call_original.twice
+				end
+			end
 		end
 	end
 end
